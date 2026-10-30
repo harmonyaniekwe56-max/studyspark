@@ -1,0 +1,10 @@
+{
+  "name": "StudySpark",
+  "short_name": "StudySpark",
+  "description": "Your little space to learn, remember and grow.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5efff",
+  "theme_color": "#8b5cf6"
+}

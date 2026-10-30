@@ -1,0 +1,958 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StudySpark</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f3ff;
+    color: #242344;
+  }
+  header {
+    background: #5146b8;
+    color: white;
+    padding: 24px 18px;
+    text-align: center;
+  }
+  header h1 { margin: 0 0 8px; }
+  main { max-width: 760px; margin: auto; padding: 18px; }
+  section {
+    background: white;
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px #24234412;
+  }
+  h2 { margin-top: 0; color: #5146b8; }
+  input, textarea {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #d5d2ed;
+    border-radius: 8px;
+    font: inherit;
+  }
+  textarea { min-height: 100px; resize: vertical; }
+  button {
+    background: #5146b8;
+    color: white;
+    border: 0;
+    padding: 11px 15px;
+    border-radius: 8px;
+    margin: 4px 4px 4px 0;
+    cursor: pointer;
+    font: inherit;
+  }
+  button:hover { background: #39318f; }
+  .delete { background: #a53e52; }
+  .item {
+    border: 1px solid #e5e2f5;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 12px;
+    overflow-wrap: anywhere;
+  }
+  .muted { color: #686780; font-size: 14px; }
+  #answer { background: #f0efff; padding: 12px; border-radius: 8px; }
+.navigation {
+  background: white;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 3px 10px #24234412;
+}
+
+.navigation a {
+  color: #5146b8;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f2f0ff;
+}
+
+.navigation a:hover {
+  background: #5146b8;
+  color: white;
+}.welcome {
+  background: linear-gradient(135deg, #5146b8, #9278e8);
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.welcome h2 {
+  margin-top: 0;
+}.study-tip {
+  background: #fff8df;
+  color: #57451a;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+#timer {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#timerDisplay {
+  font-size: 45px;
+  color: #5146b8;
+}#progress {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  background: #e8e5f5;
+  height: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 8px 0 15px;
+}
+
+.progress-fill {
+  background: #5146b8;
+  height: 100%;
+}body.dark-mode {
+  background: #171629;
+  color: #f4f1ff;
+}
+
+body.dark-mode section,
+body.dark-mode #timer,
+body.dark-mode #progress {
+  background: #292641;
+  color: white;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+  background: #383452;
+  color: white;
+  border: 1px solid #716b91;
+}
+
+body.dark-mode .navigation {
+  background: #211e36;
+}#about {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+}
+
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+section {
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+button {
+  border: none;
+  border-radius: 9px;
+  padding: 11px 18px;
+  background: #5146b8;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #d8d5e8;
+  border-radius: 9px;
+  font: inherit;
+}
+
+section h2 {
+  color: #5146b8;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>✨StudySpark</h1>
+  <p>Your little space to learn, remember and grow.</p>
+</header>
+<nav class="navigation">
+  <a href="#dashboard">Dashboard</a>
+  <a href="#studyNotes">My Notes</a>
+  <a href="#flashcards">Flashcards</a>
+  <a href="#quiz">Quizzes</a>
+  <a href="#planner">Study Planner</a>
+  <a href="#timer">Study Timer</a>
+  <a href="#progress">Subject Progress</a>
+  <a href="#about">About</a>
+</nav>
+
+
+<main>
+<section>
+<section id="dashboard">
+<div class="welcome">
+  <h2>Welcome to StudySpark! 📚</h2>
+  <p>Your personal space to learn, practise and stay organised.</p>
+  <p>Small steps every day lead to great progress.</p>
+</div><div class="study-tip">
+  <h3>💡 Study Tip of the Day</h3>
+  <p id="dailyTip">Loading your study tip...</p>
+</div>
+<button onclick="toggleDarkMode()" id="themeButton">
+  🌙 Dark Mode
+</button>
+  <h2>📊 My Learning Dashboard</h2>
+
+  <div class="item">
+    <h3>📚 Study Notes</h3>
+    <p id="noteCount">0 notes created</p>
+  </div>
+
+  <div class="item">
+    <h3>🃏 Flashcards</h3>
+    <p id="cardCount">0 flashcards created</p>
+  </div>
+
+  <div class="item">
+    <h3>📅 Study Tasks</h3>
+    <p id="taskCount">0 tasks created</p>
+  </div>
+
+  <div class="item">
+    <h3>✅ Completed Tasks</h3>
+    <p id="completedCount">0 completed</p>
+  </div>
+<button id="backupData">📥 Download My Study Backup</button>
+
+<input type="file" id="restoreFile" accept=".json">
+<button id="restoreData">📤 Restore My Study Backup</button>
+
+<p class="muted">Keep a backup of your learning materials.</p>
+
+</section>
+
+
+
+  <section>
+  <section id="studyNotes"><input
+  type="text"
+  id="noteSearch"
+  placeholder="🔍 Search your notes..."
+  oninput="searchNotes()"
+>
+    <h2>📚 My Study Notes</h2>
+    <input id="subject" placeholder="Subject (e.g. Government)">
+    <input id="noteTitle" placeholder="Note title">
+    <textarea id="noteText" placeholder="Write your study notes here..."></textarea>
+    <button id="saveNote">Save note</button>
+    <p class="muted">Your notes are saved in this browser on this device.</p>
+    <div id="notes"></div>
+  </section>
+
+  <section>
+    <h2>🃏 Flashcards</h2>
+    <input id="question" placeholder="Question (e.g. What is authority?)">
+    <textarea id="answerText" placeholder="Answer"></textarea>
+    <button id="addCard">Add flashcard</button>
+    <div id="cards"></div>
+  </section><section id="about">
+  <h2>About StudySpark ✨</h2>
+  <p>
+    StudySpark is your personal study companion.
+    It helps you organise notes, practise with flashcards,
+    create quizzes, plan your studies and track your progress.
+  </p>
+  <p>Learn something new. Make progress every day.</p>
+  <p><strong>Version:</strong> 1.0</p>
+</section>
+</main>
+<section>
+<section id="planner"><section id="timer">
+  <h2>⏱️ Study Timer</h2>
+  <h1 id="timerDisplay">25:00</h1>
+  <button onclick="startTimer()">Start</button>
+  <button onclick="pauseTimer()">Pause</button>
+  <button onclick="resetTimer()">Reset</button>
+</section>
+<section id="planner"><section id="progress">
+  <h2>📊 Subject Progress</h2>
+
+  <input id="subjectName" placeholder="Enter subject name">
+
+  <label for="subjectProgress">Progress (%)</label>
+  <input id="subjectProgress" type="number"
+         min="0" max="100" placeholder="e.g. 60">
+
+  <button onclick="addProgress()">Add Progress</button>
+
+  <div id="progressList"></div>
+</section>
+  <h2>📅 My Study Planner</h2>
+
+  <input id="taskSubject" placeholder="Subject">
+  <input id="taskName" placeholder="What do you need to study?">
+
+  <button id="addTask">Add Study Task</button>
+
+  <div id="taskList"></div>
+</section>
+
+  <section>
+    <h2>🧠 Quiz Creator</h2>
+
+    <input id="quizQuestion" placeholder="Enter your question">
+    <input id="optionA" placeholder="Option A">
+    <input id="optionB" placeholder="Option B">
+    <input id="optionC" placeholder="Option C">
+    <input id="correctAnswer" placeholder="Correct answer (A, B or C)">
+
+    <button id="addQuestion">Add Question</button>
+
+    <div id="quizQuestions"></div>
+    <button id="startQuiz">Start Quiz</button>
+    <div id="quizArea"></div>
+  </section>
+
+
+<script>
+const getSaved = key => {
+  try { return JSON.parse(localStorage.getItem(key)) || []; }
+  catch { return []; }
+};
+
+let notes = getSaved("studyspark-notes");
+let cards = getSaved("studyspark-cards");
+
+function store(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch {
+    alert("Could not save. Check your browser storage.");
+    return false;
+  }
+}
+
+function safeText(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[char]);
+}
+
+function renderNotes() {
+function updateDashboard() {
+  document.getElementById("noteCount").textContent =
+    notes.length + " notes created";
+
+  document.getElementById("cardCount").textContent =
+    cards.length + " flashcards created";
+
+  document.getElementById("taskCount").textContent =
+    tasks.length + " tasks created";
+
+  const completed = tasks.filter(task => task.done).length;
+
+  document.getElementById("completedCount").textContent =
+    completed + " completed";
+}
+
+  document.getElementById("notes").innerHTML = notes.length
+    ? notes.map((n, i) => `
+      <div class="item">
+        <strong>${safeText(n.title)}</strong>
+        <p class="muted">${safeText(n.subject)}</p>
+        <p>${safeText(n.text).replace(/\n/g, "<br>")}</p>
+        <button class="delete" data-delete-note="${i}">Delete</button>
+      </div>`).join("")
+    : '<p class="muted">No notes yet. Add your first one above!</p>';
+}
+
+function renderCards() {
+  document.getElementById("cards").innerHTML = cards.length
+    ? cards.map((c, i) => `
+      <div class="item">
+        <strong>Q: ${safeText(c.q)}</strong>
+        <p id="answer-${i}" hidden>${safeText(c.a)}</p>
+        <button data-show="${i}">Show answer</button>
+        <button class="delete" data-delete-card="${i}">Delete</button>
+      </div>`).join("")
+    : '<p class="muted">No flashcards yet. Create one above!</p>';
+}
+
+document.getElementById("saveNote").addEventListener("click", () => {
+  const subject = document.getElementById("subject").value.trim();
+  const title = document.getElementById("noteTitle").value.trim();
+  const text = document.getElementById("noteText").value.trim();
+
+  if (!subject || !title || !text) {
+    alert("Please fill in the subject, title and notes.");
+    return;
+  }
+
+  notes.unshift({ subject, title, text });
+  if (store("studyspark-notes", notes)) {
+    document.getElementById("subject").value = "";
+    document.getElementById("noteTitle").value = "";
+    document.getElementById("noteText").value = "";
+    renderNotes();
+  } else {
+    notes.shift();
+  }
+});
+
+document.getElementById("addCard").addEventListener("click", () => {
+  const q = document.getElementById("question").value.trim();
+  const a = document.getElementById("answerText").value.trim();
+
+  if (!q || !a) {
+    alert("Please enter both a question and an answer.");
+    return;
+  }
+
+  cards.unshift({ q, a });
+  if (store("studyspark-cards", cards)) {
+    document.getElementById("question").value = "";
+    document.getElementById("answerText").value = "";
+    renderCards();
+  } else {
+    cards.shift();
+  }
+});
+
+document.addEventListener("click", event => {
+  const button = event.target.closest("button");
+  if (!button) return;
+
+  if (button.dataset.deleteNote !== undefined) {
+    const i = Number(button.dataset.deleteNote);
+    const old = notes;
+    notes = notes.filter((_, index) => index !== i);
+    if (store("studyspark-notes", notes)) renderNotes();
+    else notes = old;
+  }
+
+  if (button.dataset.deleteCard !== undefined) {
+    const i = Number(button.dataset.deleteCard);
+    const old = cards;
+    cards = cards.filter((_, index) => index !== i);
+    if (store("studyspark-cards", cards)) renderCards();
+    else cards = old;
+  }
+
+  if (button.dataset.show !== undefined) {
+    const answer = document.getElementById(
+      "answer-" + button.dataset.show
+    );
+    answer.hidden = !answer.hidden;
+    button.textContent = answer.hidden ? "Show answer" : "Hide answer";
+  }
+});
+
+renderNotes();
+renderCards();
+rendertasks();
+updateDashboard();
+// STUDY PLANNER
+
+let tasks = load("ss-tasks");
+
+function renderTasks() {
+  document.getElementById("taskList").innerHTML =
+    tasks.map((task, i) => `
+      <div class="item">
+        <strong>${safe(task.subject)}</strong>
+        <p>${safe(task.name)}</p>
+        <p>${task.done ? "✅ Completed" : "🕒 Not completed"}</p>
+        <button data-task-done="${i}">
+          ${task.done ? "Undo" : "Complete"}
+        </button>
+        <button data-task-delete="${i}">Delete</button>
+      </div>
+    `).join("");
+}
+
+document.getElementById("addTask").onclick = () => {
+  const subject = document.getElementById("taskSubject").value.trim();
+  const name = document.getElementById("taskName").value.trim();
+
+  if (!subject || !name) {
+    alert("Please enter a subject and a study task.");
+    return;
+  }
+
+  tasks.unshift({ subject, name, done: false });
+
+  try {
+    localStorage.setItem("ss-tasks", JSON.stringify(tasks));
+  } catch {
+    tasks.shift();
+    alert("Could not save the task.");
+    return;
+  }
+
+  document.getElementById("taskSubject").value = "";
+  document.getElementById("taskName").value = "";
+  renderTasks();
+};
+
+document.addEventListener("click", event => {
+  const button = event.target.closest("button");
+  if (!button) return;
+
+  if (button.dataset.taskDone !== undefined) {
+    const i = Number(button.dataset.taskDone);
+    tasks[i].done = !tasks[i].done;
+    localStorage.setItem("ss-tasks", JSON.stringify(tasks));
+    renderTasks();
+  }
+
+  if (button.dataset.taskDelete !== undefined) {
+    const i = Number(button.dataset.taskDelete);
+    tasks.splice(i, 1);
+    localStorage.setItem("ss-tasks", JSON.stringify(tasks));
+    renderTasks();
+  }
+});
+
+renderTasks();
+
+// QUIZ CREATOR
+
+let quizQuestions = [];
+
+document.getElementById("addQuestion").onclick = () => {
+  const question = document.getElementById("quizQuestion").value.trim();
+  const A = document.getElementById("optionA").value.trim();
+  const B = document.getElementById("optionB").value.trim();
+  const C = document.getElementById("optionC").value.trim();
+  const correct = document.getElementById("correctAnswer")
+    .value.trim().toUpperCase();
+
+  if (!question || !A || !B || !C ||
+      !["A", "B", "C"].includes(correct)) {
+    alert("Fill in all fields and enter A, B or C as the correct answer.");
+    return;
+  }
+
+  quizQuestions.push({ question, A, B, C, correct });
+
+  document.getElementById("quizQuestions").innerHTML =
+    `<p>${quizQuestions.length} question(s) added!</p>`;
+
+  document.getElementById("quizQuestion").value = "";
+  document.getElementById("optionA").value = "";
+  document.getElementById("optionB").value = "";
+  document.getElementById("optionC").value = "";
+  document.getElementById("correctAnswer").value = "";
+};
+
+document.getElementById("startQuiz").onclick = () => {
+  if (quizQuestions.length === 0) {
+    alert("Please add at least one question first.");
+    return;
+  }
+
+  let score = 0;
+
+  const area = document.getElementById("quizArea");
+
+  area.innerHTML = quizQuestions.map((q, i) => `
+    <div class="item">
+      <strong>${safe(q.question)}</strong>
+      ${["A", "B", "C"].map(letter => `
+        <label style="display:block;margin:10px">
+          <input type="radio" name="quiz${i}" value="${letter}"
+            style="display:inline;width:auto">
+          ${letter}. ${safe(q[letter])}
+        </label>
+      `).join("")}
+    </div>
+  `).join("") + `<button id="submitQuiz">Submit Quiz</button>
+                 <div id="quizResult"></div>`;
+
+  document.getElementById("submitQuiz").onclick = () => {
+    score = 0;
+
+    quizQuestions.forEach((q, i) => {
+      const selected = document.querySelector(
+        `input[name="quiz${i}"]:checked`
+      );
+
+      if (selected && selected.value === q.correct) {
+        score++;
+      }
+    });
+
+    document.getElementById("quizResult").innerHTML =
+      `<h3>Your score: ${score} / ${quizQuestions.length}</h3>`;
+  };
+};
+// BACKUP AND RESTORE
+
+document.getElementById("backupData").onclick = () => {
+  const backup = {
+    notes: notes,
+    cards: cards,
+    tasks: tasks
+  };
+
+  const file = new Blob(
+    [JSON.stringify(backup, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(file);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "StudySpark-Backup.json";
+  link.click();
+
+  URL.revokeObjectURL(url);
+};
+
+document.getElementById("restoreData").onclick = () => {
+  const file = document.getElementById("restoreFile").files[0];
+
+  if (!file) {
+    alert("Please select a backup file first.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+
+      if (
+        !Array.isArray(data.notes) ||
+        !Array.isArray(data.cards) ||
+        !Array.isArray(data.tasks)
+      ) {
+        throw new Error("Invalid backup");
+      }
+
+      localStorage.setItem("ss-notes", JSON.stringify(data.notes));
+      localStorage.setItem("ss-cards", JSON.stringify(data.cards));
+      localStorage.setItem("ss-tasks", JSON.stringify(data.tasks));
+
+      notes = data.notes;
+      cards = data.cards;
+      tasks = data.tasks;
+
+      renderNotes();
+      renderCards();
+      renderTasks();
+      updateDashboard();
+
+      alert("Your StudySpark backup has been restored!");
+    } catch {
+      alert("That backup file is invalid or could not be restored.");
+    }
+  };
+
+  reader.readAsText(file);
+};
+const studyTips = [
+  "Take short breaks between study sessions.",
+  "Test yourself instead of only rereading your notes.",
+  "Study one topic at a time.",
+  "Explain what you learn in your own words.",
+  "Keep your study space organised."
+];
+
+const randomTip = studyTips[
+  Math.floor(Math.random() * studyTips.length)
+];
+
+document.getElementById("dailyTip").textContent = randomTip;let timeLeft = 25 * 60;
+let timerInterval = null;
+
+function displayTimer() {
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  document.getElementById("timerDisplay").textContent =
+    String(minutes).padStart(2, "0") + ":" +
+    String(seconds).padStart(2, "0");
+}
+
+function startTimer() {
+  if (timerInterval !== null) return;
+
+  timerInterval = setInterval(() => {
+    if (timeLeft > 0) {
+      timeLeft--;
+      displayTimer();
+    } else {
+      pauseTimer();
+      alert("Study session complete! Well done!");
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function resetTimer() {
+  pauseTimer();
+  timeLeft = 25 * 60;
+  displayTimer();
+}
+
+displayTimer();let subjectProgressList = JSON.parse(
+  localStorage.getItem("ss-progress") || "[]"
+);
+
+function addProgress() {
+  const subject = document.getElementById("subjectName").value.trim();
+  const progress = Number(
+    document.getElementById("subjectProgress").value
+  );
+
+  if (!subject || document.getElementById("subjectProgress").value === "" ||
+      !Number.isInteger(progress) || progress < 0 || progress > 100) {
+    alert("Enter a subject and a whole number from 0 to 100.");
+    return;
+  }
+
+  subjectProgressList.push({ subject, progress });
+
+  localStorage.setItem(
+    "ss-progress",
+    JSON.stringify(subjectProgressList)
+  );
+
+  document.getElementById("subjectName").value = "";
+  document.getElementById("subjectProgress").value = "";
+
+  renderProgress();
+}
+
+function renderProgress() {
+  const container = document.getElementById("progressList");
+  container.innerHTML = "";
+
+  subjectProgressList.forEach(item => {
+    container.innerHTML += `
+      <p><strong>${safe(item.subject)}</strong> — ${item.progress}%</p>
+      <div class="progress-bar">
+        <div class="progress-fill"
+             style="width: ${item.progress}%"></div>
+      </div>
+    `;
+  });
+}
+
+renderProgress();function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+
+  const isDark = document.body.classList.contains("dark-mode");
+
+  localStorage.setItem("ss-dark-mode", isDark);
+
+  document.getElementById("themeButton").textContent =
+    isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+}
+
+if (localStorage.getItem("ss-dark-mode") === "true") {
+  document.body.classList.add("dark-mode");
+  document.getElementById("themeButton").textContent = "☀️ Light Mode";
+}function searchNotes() {
+  const searchText = document
+    .getElementById("noteSearch")
+    .value.toLowerCase();
+
+  const filteredNotes = notes.filter(note =>
+    (note.title + " " + note.subject + " " + note.body)
+      .toLowerCase()
+      .includes(searchText)
+  );
+
+  const container = document.getElementById("notesList");
+  container.innerHTML = "";
+
+  filteredNotes.forEach((note, index) => {
+    container.innerHTML += `
+      <div class="note">
+        <h3>${safe(note.title)}</h3>
+        <p>${safe(note.subject)}</p>
+        <p>${safe(note.body)}</p>
+      </div>
+    `;
+  });
+}
+document.getElementById("restoreData").addEventListener("click", function () {
+  document.getElementById("restoreFile").click();
+});
+
+document.getElementById("restoreFile").addEventListener("change", function (event) {
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    try {
+      const backup = JSON.parse(e.target.result);
+
+      if (
+        !Array.isArray(backup.notes) ||
+        !Array.isArray(backup.cards) ||
+        !Array.isArray(backup.tasks)
+      ) {
+        alert("This backup file is not valid.");
+        return;
+      }
+
+      if (!confirm("Restoring this backup will replace your current notes, flashcards and tasks. Continue?")) {
+        return;
+      }
+
+      localStorage.setItem("ss-notes", JSON.stringify(backup.notes));
+      localStorage.setItem("ss-cards", JSON.stringify(backup.cards));
+      localStorage.setItem("ss-tasks", JSON.stringify(backup.tasks));
+
+      notes = backup.notes;
+      cards = backup.cards;
+      tasks = backup.tasks;
+
+      renderNotes();
+      renderCards();
+      renderTasks();
+      updateDashboard();
+
+      alert("Your study backup has been restored successfully!");
+    } catch (error) {
+      alert("Unable to read this backup file.");
+    }
+
+    event.target.value = "";
+  };
+
+  reader.readAsText(file);
+});// STUDYSPARK BACKUP
+document.getElementById("backupData").addEventListener("click", function () {
+  const backup = {
+    notes: notes,
+    cards: cards,
+    tasks: tasks
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(backup, null, 2)],
+    { type: "application/json" }
+  );
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "StudySpark-Backup.json";
+  link.click();
+
+  URL.revokeObjectURL(link.href);
+});
+
+// STUDYSPARK RESTORE
+document.getElementById("restoreData").addEventListener("click", function () {
+  document.getElementById("restoreFile").click();
+});
+
+document.getElementById("restoreFile").addEventListener("change", function (event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    try {
+      const backup = JSON.parse(reader.result);
+
+      if (
+        !Array.isArray(backup.notes) ||
+        !Array.isArray(backup.cards) ||
+        !Array.isArray(backup.tasks)
+      ) {
+        alert("Invalid StudySpark backup file.");
+        return;
+      }
+
+      if (!confirm("This will replace your current notes, flashcards and tasks. Continue?")) {
+        return;
+      }
+
+      notes = backup.notes;
+      cards = backup.cards;
+      tasks = backup.tasks;
+
+      localStorage.setItem("ss-notes", JSON.stringify(notes));
+      localStorage.setItem("ss-cards", JSON.stringify(cards));
+      localStorage.setItem("ss-tasks", JSON.stringify(tasks));
+
+      renderNotes();
+      renderCards();
+      renderTasks();
+      updateDashboard();
+
+      alert("Backup restored successfully!");
+    } catch (error) {
+      alert("Could not restore this backup file.");
+    }
+
+    event.target.value = "";
+  };
+
+  reader.readAsText(file);
+});
+</script>
+</body>
+</html>
+
+
+
